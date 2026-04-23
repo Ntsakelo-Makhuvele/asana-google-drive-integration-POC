@@ -1,3 +1,4 @@
+
 import {
     Card,
     CardAction,
@@ -19,18 +20,30 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ppt from '@/assets/ppt.ico'
 import googleDrive from '@/assets/googledrive.ico'
-import { tickets } from '@/constants/data'
+import { tickets,type TicketsList } from '@/constants/data'
 import { Draggable } from "@/components/Draggable"
-import { EllipsisHorizontalIcon, TrashIcon,PencilIcon,PencilSquareIcon } from '@heroicons/react/24/outline'
+import { EllipsisHorizontalIcon, TrashIcon,PencilIcon,PencilSquareIcon,CheckIcon } from '@heroicons/react/24/outline'
+import { useState } from "react"
 
-
+type Col =  'review' | 'create' | 'approved'
 
 export const Home = () => {
-    const columns = Object.keys(tickets)
-    console.log(columns)
+    const [ticketsList, setTickesList] = useState<TicketsList>(tickets)
+
+    // const columns = Object.keys(tickets)
+    const handleUpdateTicket = (ticket_id:number, current_col:Col, target_col:Col) => {
+       const targetTicket = ticketsList[current_col].filter(item => item.id === ticket_id)
+       const filteredTickets = ticketsList[current_col].filter(item => item.id !== ticket_id) 
+       ticketsList[current_col] = filteredTickets
+       ticketsList[target_col].push(targetTicket[0])
+       setTickesList({create:ticketsList['create'],review:ticketsList['review'],approved:ticketsList['approved']})
+   
+    }
+
+    
     return (
         <div className="p-10 grid grid-cols-3 gap-4 mb-30">
-            {tickets && Object.entries(tickets).map(([column, item], index) => (
+            {ticketsList && Object.entries(ticketsList).map(([column, item], index) => (
                 <div key={index}>
                     <Card className="mb-5 bg-sky-300">
                         <CardHeader className="">
@@ -38,12 +51,12 @@ export const Home = () => {
                         </CardHeader>
                     </Card>
                     <ScrollArea className="border p-10 h-[100vh] rounded-xl">
-                        {item.map((ticket, index) => (
+                        {item.map((ticket:any, index:any) => (
                             //  <Draggable key={ticket.id} id={ticket.id} column={column} index={index}>
-                            <Card className="min-h-70 mb-5 p-5 w-[90%] m-auto mt-10" key={index}>
+                            <Card className="min-h-70 p-5 w-[90%] m-auto mt-10" key={ticket.id}>
                                 <CardTitle>{ticket.campaign_name}
                                     <DropdownMenu>
-                                        <DropdownMenuTrigger render={<EllipsisHorizontalIcon className="size-6 inline float-right cursor-pointer" />}>
+                                        <DropdownMenuTrigger render={<button className="inline relative float-right"><EllipsisHorizontalIcon className="size-6 inline float-right cursor-pointer" /></button>}>
                                       
                                         </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end" className="w-full">
@@ -53,20 +66,19 @@ export const Home = () => {
                                                     <PencilIcon />
                                                     Edit
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer">
+                                           
+                                                  {column === 'create' ? <DropdownMenuItem className="cursor-pointer" onClick={() => handleUpdateTicket(ticket.id,column,'review')}>
+                                                  <PencilSquareIcon />
+                                                  Move to review
+                                                </DropdownMenuItem> : <DropdownMenuItem className="cursor-pointer" onClick={() => handleUpdateTicket(ticket.id,column as Col,'approved')}>
+                                                  <CheckIcon />
+                                                  Move to approved
+                                                </DropdownMenuItem>}
+                                                     <DropdownMenuItem className="cursor-pointer">
                                                   <TrashIcon />
                                                   Delete
                                                 </DropdownMenuItem>
-                                                   <DropdownMenuItem className="cursor-pointer">
-                                                  <PencilSquareIcon />
-                                                  Move to review
-                                                </DropdownMenuItem>
                                             </DropdownMenuGroup>
-                                            {/* <DropdownMenuSeparator />
-                                            <DropdownMenuGroup>
-                                                <DropdownMenuItem>Team</DropdownMenuItem>
-                                                <DropdownMenuItem>Subscription</DropdownMenuItem>
-                                            </DropdownMenuGroup> */}
                                         </DropdownMenuContent>
                                     </DropdownMenu>
 
@@ -84,14 +96,14 @@ export const Home = () => {
                                         <img src={googleDrive} alt="" className="w-6 h-6 inline" />
                                         <p className="inline ml-2">Assets Folder</p>
                                     </div>
-                                    <div className="grid grid-cols-4 mt-5">
-                                        {ticket.uploads.map((upload_url, index) => (
+                                    {/* <div className="grid grid-cols-4 mt-5">
+                                        {ticket.uploads.map((upload_url:any, index:any) => (
                                             <div className="h-15" key={index}>
                                                 <img src={upload_url} alt="" className="h-full w-auto object-cover" />
                                             </div>
                                         ))}
 
-                                    </div>
+                                    </div> */}
                                 </CardContent>
                             </Card>
 

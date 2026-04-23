@@ -1,4 +1,4 @@
-export type Ticket ={
+export interface Ticket {
     id:number,
     campaign_name:string,
     deployment_date: string,
@@ -9,14 +9,14 @@ export type Ticket ={
 
 }
 
-export type TicketsList = {
-    start: Ticket[],
+export interface TicketsList  {
+    create: Ticket[],
     review: Ticket[],
     approved: Ticket[]
 }
 
 export const tickets: TicketsList = {
-    'start': [
+    'create': [
         {
           id:1,  
           campaign_name: 'Foodie Friday',
