@@ -9,6 +9,8 @@ export interface Ticket {
 
 }
 
+import {HomeIcon,WrenchIcon,EllipsisHorizontalCircleIcon} from '@heroicons/react/24/outline'
+
 export interface TicketsList  {
     create: Ticket[],
     review: Ticket[],
@@ -49,3 +51,46 @@ export const tickets: TicketsList = {
     'approved': [],
 }
 
+export const SidebarMenuList = {
+    main: [
+        {
+            id:1,
+            title:'Home',
+            icon: HomeIcon,
+            link:'/'
+        },
+         {
+            id:2,
+            title:'Manage',
+            icon: WrenchIcon,
+            link:'/manage'
+        },
+        {
+            id:3,
+            title:'More',
+            icon: EllipsisHorizontalCircleIcon,
+            link:'/more'
+        },
+    ],
+    secondary: [
+        {
+            id:4,
+            title:'MarketPlace',
+            link:'/marketplace',
+            variant:'emerald-500'
+        },
+        {
+            id:4,
+            title:'TakealotNow',
+            link:'/takealotnow',
+            variant:'cyan-500'
+        },
+        {
+            id:4,
+            title:'Groceries',
+            link:'/groceries',
+            variant:'violet-500'
+        },
+
+    ]
+}
