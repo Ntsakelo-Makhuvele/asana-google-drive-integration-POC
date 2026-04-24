@@ -40,7 +40,7 @@ export const AppSidebar = () => {
         {SidebarMenuList.secondary.map(item => (
           <SidebarMenuItem>
             <SidebarMenuButton className="text-md mb-3">
-                <span className={`bg-${item.variant} text-white text-sm text-center flex items-center p-2 rounded-sm`}>{item.title.charAt(0)}</span><span>{item.title}</span>
+                <span className={`bg-slate-900 text-white text-sm text-center flex items-center p-2 rounded-sm`}>{item.title.charAt(0)}</span><span>{item.title}</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}
